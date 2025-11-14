@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Shop Portal</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    color: #333;
+    min-height: 100vh;
+  }
+  header {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 15px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: 0.3s;
+  }
+  nav a:hover {
+    background: white;
+    color: #0078d7;
+  }
+  main {
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+  }
+  .page {
+    display: none;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .active { display: block; }
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    outline: none;
+  }
+  input:focus, textarea:focus {
+    border-color: #0078d7;
+    box-shadow: 0 0 5px #0078d7;
+  }
+ button {
+    background: #0078d7;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #005bb5;
+  }
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .product {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    flex: 1 1 calc(33% - 20px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s;
+  }
+  .product:hover {
+    transform: translateY(-5px);
+  }
+  .product img {
+    width: 100%;
+    border-radius: 10px;
+  }
+  .comment {
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 5px;
+  }
+  footer {
+    text-align: center;
+    padding: 10px;
+    color: white;
+    background: rgba(0,0,0,0.6);
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h2>E-Shop Portal</h2>
+  <nav>
+    <ul>
+      <li><a onclick="showPage('home')">Home</a></li>
+      <li><a onclick="showPage('products')">Products</a></li>
+      <li><a onclick="showPage('register')">Register</a></li>
+      <li><a onclick="showPage('login')">Login</a></li>
+      <li><a onclick="showPage('wishlist')">Wishlist</a></li>
+      <li><a onclick="showPage('orders')">Orders</a></li>
+      <li><a onclick="showPage('customer')">Customer Care</a></li>
+      <li><a onclick="showPage('report')">Reports</a></li>
+      <li><a onclick="showPage('contact')">Contact</a></li>
+      <li><a onclick="showPage('about')">About</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <!-- Home -->
+  <section id="home" class="page active">
+    <h2>Welcome to E-Shop!</h2>
+    <p>Shop smarter, live better. Explore our exclusive range of products today.</p>
+  </section>
+  <!-- Products -->
+  <section id="products" class="page">
+    <h2>Products</h2>
+    <div id="product-list" class="flex"></div>
+  </section>
+  <!-- Register -->
+  <section id="register" class="page">
+    <h2>User Registration</h2>
+    <input id="rname" placeholder="Full Name">
+    <input id="remail" placeholder="Email">
+    <input id="rphone" placeholder="Phone Number">
+    <input id="rpass" type="password" placeholder="Password">
+    <input id="rcpass" type="password" placeholder="Confirm Password">
+    <button onclick="registerUser()">Register</button>
+    <p id="rmsg"></p>
+  </section>
+  <!-- Login -->
+  <section id="login" class="page">
+    <h2>Login</h2>
+    <input id="lemail" placeholder="Email">
+    <input id="lpass" type="password" placeholder="Password">
+    <button onclick="loginUser()">Login</button>
+    <p id="lmsg"></p>
+  </section>
+  <!-- Wishlist -->
+  <section id="wishlist" class="page">
+    <h2>My Wishlist</h2>
+    <div id="wishlistItems"></div>
+  </section>
+  <!-- Orders -->
+  <section id="orders" class="page">
+    <h2>My Orders</h2>
+    <div id="orderItems"></div>
+  </section>
+  <!-- Customer Care -->
+  <section id="customer" class="page">
+    <h2>Customer Care</h2>
+    <input id="csubject" placeholder="Subject">
+    <textarea id="cmsg" placeholder="Describe your issue..."></textarea>
+    <button onclick="sendTicket()">Submit</button>
+    <div id="tickets"></div>
+  </section>
+  <!-- Report -->
+  <section id="report" class="page">
+    <h2>Reports</h2>
+    <p>Total Orders: <span id="totalOrders">0</span></p>
+    <p>Total Wishlist Items: <span id="totalWishlist">0</span></p>
+  </section>
+  <!-- Contact -->
+  <section id="contact" class="page">
+    <h2>Contact Us</h2>
+    <p>Email: support@eshop.com</p>
+    <p>Phone: +91 98765 43210</p>
+  </section>
+  <!-- About -->
+  <section id="about" class="page">
+    <h2>About Us</h2>
+    <p>E-Shop is a sample e-commerce platform built using HTML, CSS, and JavaScript for learning purposes.</p>
+  </section>
+</main>
+<footer>
+  &copy; 2025 E-Shop | Designed with ❤ in HTML, CSS, and JS
+</footer>
+<script>
+  // Demo data
+  const products = [
+    {id:1, name:"Smartphone X100", price:19999, img:"https://via.placeholder.com/200x150?text=Smartphone"},
+    {id:2, name:"Wireless Earbuds", price:2999, img:"https://via.placeholder.com/200x150?text=Earbuds"},
+    {id:3, name:"Smartwatch Pro", price:4999, img:"https://via.placeholder.com/200x150?text=Smartwatch"}
+  ];
+  let users = [];
+  let currentUser = null;
+  let wishlist = [];
+  let orders = [];
+  let tickets = [];
+  function showPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(id==="products") loadProducts();
+    if(id==="wishlist") showWishlist();
+    if(id==="orders") showOrders();
+    if(id==="report") updateReport();
+    if(id==="customer") showTickets();
+  }
+  function loadProducts(){
+    const div = document.getElementById("product-list");
+    div.innerHTML = "";
+    products.forEach(p=>{
+      const el = document.createElement("div");
+      el.className = "product";
+      el.innerHTML = `
+        <img src="${p.img}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <p><b>₹${p.price}</b></p>
+        <button onclick="addToWishlist(${p.id})">Add to Wishlist</button>
+        <button onclick="placeOrder(${p.id})">Buy Now</button>`;
+      div.appendChild(el);
+    });
+  }
+
+  function registerUser(){
+    let name = rname.value.trim(), email = remail.value.trim(), phone = rphone.value.trim(), pass = rpass.value, cpass = rcpass.value;
+    if(!name||!email||!phone||!pass||!cpass){rmsg.textContent="All fields required";return;}
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){rmsg.textContent="Invalid email";return;}
+    if(!/^\d{10}$/.test(phone)){rmsg.textContent="Phone must be 10 digits";return;}
+    if(pass!==cpass){rmsg.textContent="Passwords do not match";return;}
+    users.push({name,email,phone,password:pass});
+    rmsg.textContent="Registered successfully!";
+    rname.value=remail.value=rphone.value=rpass.value=rcpass.value="";
+  }
+  function loginUser(){
+    let email = lemail.value.trim(), pass = lpass.value;
+    let u = users.find(x=>x.email===email && x.password===pass);
+    if(!u){lmsg.textContent="Invalid credentials";return;}
+    currentUser = u;
+    lmsg.textContent="Welcome, "+u.name+"!";
+  }
+  function addToWishlist(pid){
+    if(!currentUser){alert("Login first!");return;}
+    let p = products.find(x=>x.id===pid);
+    if(!wishlist.includes(p)) wishlist.push(p);
+    alert("Added to wishlist!");
+  }
+  function placeOrder(pid){
+    if(!currentUser){alert("Login first!");return;}
+    let p = products.find(x=>x.id===pid);
+    orders.push({product:p,date:new Date().toLocaleString()});
+    alert("Order placed!");
+  }
+  function showWishlist(){
+    wishlistItems.innerHTML = wishlist.length ? wishlist.map(p=><div>${p.name} - ₹${p.price}</div>).join("") : "No items yet";
+  }
+
+  function showOrders(){
+    orderItems.innerHTML = orders.length ? orders.map(o=><div>${o.product.name} - ₹${o.product.price} (${o.date})</div>).join("") : "No orders yet";
+  }
+  function sendTicket(){
+    if(!currentUser){alert("Login first!");return;}
+    let s=csubject.value.trim(),m=cmsg.value.trim();
+    if(!s||!m){alert("All fields required");return;}
+    tickets.push({subject:s,message:m});
+    alert("Ticket submitted!");
+    csubject.value=cmsg.value="";
+    showTickets();
+  }
+  function showTickets(){
+    ticketsDiv = document.getElementById("tickets");
+    ticketsDiv.innerHTML = tickets.length ? tickets.map(t=><div><b>${t.subject}</b>: ${t.message}</div>).join("") : "No tickets yet";
+  }
+  function updateReport(){
+    totalOrders.textContent = orders.length;
+    totalWishlist.textContent = wishlist.length;
+  }
+</script>
+</body>
+</html>
